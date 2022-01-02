@@ -25,7 +25,12 @@ using namespace vex;
 competition Competition;
 bool debugEnabled = true;
 float speed = 1.0;
+float liftSpeed = 0.5;
 
+
+
+///////////////////////////////////////////////////////////////
+/////////A DEBUG FOR FUN/////////
 
 int debug()
 {
@@ -45,18 +50,20 @@ int debug()
     Controller1.Screen.setCursor(2,1);
     Controller1.Screen.print("RM Temp: %d", rightMotorsTemp);
 
-    //Controller1.Screen.setCursor(3,1);
-    //Controller1.Screen.print("Battery: %d", Brain.Battery.capacity());
-
     Controller1.Screen.setCursor(3,1);
     Controller1.Screen.print("Speed: %f", speed);
 
     vex::task::sleep(4000);
   }
 
-  return 1;
 }
+/////END OF DEBUG FUNCTION/////
+///////////////////////////////////////////////////////////////
 
+
+
+///////////////////////////////////////////////////////////////
+////////DRIVER CONTROL FUNCTION////////
 
 void drivercontrol()
 {
@@ -66,10 +73,11 @@ void drivercontrol()
 
   while(1)
   {
-      thirdAxisPos = Controller1.Axis3.position();
-      fourthAxisPos = Controller1.Axis4.position();
-      secondAxisPos = Controller1.Axis2.position();
+    thirdAxisPos = Controller1.Axis3.position();
+    fourthAxisPos = Controller1.Axis4.position();
+    secondAxisPos = Controller1.Axis2.position();
 
+    // Drives and turns the robot with left analog stick
     if (thirdAxisPos != 0 || fourthAxisPos != 0)
     {
       LeftMotors.spin(forward, (thirdAxisPos + fourthAxisPos) * speed, percent);
@@ -81,9 +89,10 @@ void drivercontrol()
       RightMotors.stop(coast);
     }
     
+    // Moves the lift up and down with right analog stick
     if (secondAxisPos != 0)
     {
-      Lift.spin(forward, secondAxisPos * 0.5, percent);
+      Lift.spin(forward, secondAxisPos * liftSpeed, percent);
     }
     else
     {
@@ -94,12 +103,27 @@ void drivercontrol()
 
 }
 
+/////END OF DRIVER CONTROLL FUNCTION/////
+///////////////////////////////////////////////////////////////
 
-int autonomous()
+
+
+///////////////////////////////////////////////////////////////
+/////////AUTONOMOUS FUNCTION/////////
+
+void autonomous()
 {
-  return 0;
+  //Blam_bot.doAuton(true) 
+  //yay we win!
 }
 
+/////END OF AUTONOMOUS FUNCTION/////
+///////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////
+///MAIN FUNCTION *CALLED WHEN SCRIPT IS RAN*///
 
 int main()
 {
@@ -115,3 +139,6 @@ int main()
 
   return 0;
 }
+
+/////////////END OF MAIN FUNCTION/////////////
+///////////////////////////////////////////////////////////////
